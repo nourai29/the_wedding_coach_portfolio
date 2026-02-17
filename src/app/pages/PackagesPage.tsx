@@ -201,7 +201,7 @@ export function PackagesPage() {
                   fontFamily: "'Tenor Sans', sans-serif",
                 }}
               >
-                Get Started
+                Let's Connect!
               </button>
             </motion.div>
           ))}

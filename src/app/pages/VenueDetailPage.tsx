@@ -1,20 +1,67 @@
 import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { venues } from '../../venues';
 
-// Helper function to get image URLs correctly for Vite
+// Eagerly import all portfolio images so Vite can resolve them
+const imageModules = import.meta.glob('/src/assets/portfolio/*', { eager: true, import: 'default' }) as Record<string, string>;
+const venueModules = import.meta.glob('/src/assets/venues/*', { eager: true, import: 'default' }) as Record<string, string>;
+
+// Build a normalized lookup: strip leading spaces from filenames for matching
+const normalizedImageMap: Record<string, string> = {};
+for (const [key, url] of Object.entries(imageModules)) {
+  const dir = key.substring(0, key.lastIndexOf('/') + 1);
+  const filename = key.substring(key.lastIndexOf('/') + 1).trimStart();
+  normalizedImageMap[`${dir}${filename}`] = url;
+}
+
 const getImageUrl = (imagePath: string) => {
-  // imagePath comes like 'src/assets/portfolio/Anantara_Santorini_1.jpg' or 'src/assets/venues/logo.svg'
-  // We need a path relative to the current file for new URL()
-  // This assumes VenueDetailPage.tsx is in src/app/pages/
-  // So, from src/app/pages/ to src/assets/ is ../../assets/
-  const relativePath = imagePath.replace('src/', ''); // 'assets/portfolio/Anantara_Santorini_1.jpg'
-  return new URL(`../../${relativePath}`, import.meta.url).href;
+  const key = `/${imagePath}`;
+  return imageModules[key] || normalizedImageMap[key] || venueModules[key] || '';
 };
 
+const fadeInUp = {
+  hidden: { opacity: 0, y: 60 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.25, 1, 0.5, 1]
+    }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.2
+    }
+  }
+};
+
+// Editorial grid spans repeating pattern
+const spanPatterns = [
+  'md:col-span-2 md:row-span-2',
+  'md:row-span-2',
+  '',
+  '',
+  'md:col-span-2',
+  '',
+  '',
+  'md:row-span-2',
+  'md:col-span-2',
+  '',
+];
+
 export function VenueDetailPage() {
-  const { venueId } = useParams<{ venueId: string }>();
-  const venue = venues.find((v) => v.id === venueId);
+  const { id } = useParams<{ id: string }>();
+  const venue = venues.find((v) => v.id === id);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
 
   if (!venue) {
     return <div>Venue not found</div>;
@@ -22,86 +69,120 @@ export function VenueDetailPage() {
 
   return (
     <div className="pt-20" style={{ backgroundColor: '#FFFBF1', minHeight: '100vh' }}>
-      <div className="p-8 pb-16 max-w-7xl mx-auto">
+      <div className="pb-16" style={{ paddingLeft: '8vw', paddingRight: '8vw' }}>
         {/* Back to All Venues link */}
-        <Link 
-          to="/venues" 
-          className="inline-block mb-8 text-lg hover:underline transition-all duration-300"
-          style={{ 
-            fontFamily: "'Tenor Sans', sans-serif", 
+        <Link
+          to="/venues"
+          className="inline-block mb-8 pt-8 hover:underline transition-all duration-300"
+          style={{
+            fontFamily: "'Tenor Sans', sans-serif",
             color: '#73555d',
-            letterSpacing: '0.05em'
+            fontSize: '13px',
+            letterSpacing: '0.1em',
           }}
         >
           &larr; Back to All Venues
         </Link>
 
         {/* Venue Header */}
-        <div className="flex flex-col md:flex-row items-center md:items-start mb-12">
-          {/* Using getImageUrl for logo as well for consistency */}
-          <img 
-            src={getImageUrl(venue.logo)} 
-            alt={venue.name} 
-            className="w-48 h-auto object-contain mb-6 md:mb-0 md:mr-8" 
+        <div className="text-center mb-12">
+          <img
+            src={getImageUrl(venue.logo)}
+            alt={venue.name}
+            className="w-32 h-auto object-contain mx-auto mb-6 opacity-60"
+            style={{ filter: 'grayscale(100%)' }}
           />
-          <div>
-            <h1 
-              className="text-4xl font-bold mb-2"
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                color: '#73555d',
-                lineHeight: '1.2'
-              }}
-            >
-              {venue.name}
-            </h1>
-            <p 
-              className="text-lg"
-              style={{
-                fontFamily: "'Tenor Sans', sans-serif",
-                color: '#73555d',
-                opacity: 0.8
-              }}
-            >
-              A breathtaking backdrop for your unforgettable moments.
-            </p>
-          </div>
+          <h1
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+              lineHeight: '1.2',
+              color: '#73555d',
+              fontWeight: 500,
+              marginBottom: '8px'
+            }}
+          >
+            {venue.name}
+          </h1>
+          <p
+            style={{
+              fontFamily: "'Tenor Sans', sans-serif",
+              fontSize: '15px',
+              lineHeight: '1.8',
+              color: '#73555d',
+              opacity: 0.8,
+            }}
+          >
+            A breathtaking backdrop for your unforgettable moments.
+          </p>
         </div>
 
-        {/* Photo Wall Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {venue.images.map((image, index) => (
-            <motion.div
-              key={index}
-              className="relative overflow-hidden group cursor-pointer aspect-square" // aspect-square to maintain ratio
-              whileHover={{ 
-                scale: 1.05, 
-                boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.15)'
-              }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
-              <img 
-                src={getImageUrl(image)} 
-                alt={`${venue.name} ${index + 1}`} 
-                className="w-full h-full object-cover" 
-              />
-              {/* Overlay on hover */}
+        {/* Editorial Photo Wall */}
+        {venue.images.length > 0 ? (
+          <motion.div
+            ref={ref}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={staggerContainer}
+            className="grid grid-cols-2 md:grid-cols-4 gap-3"
+            style={{ gridAutoRows: '180px' }}
+          >
+            {venue.images.map((image, index) => (
               <motion.div
-                className="absolute inset-0 bg-black bg-opacity-25 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                initial={{ opacity: 0 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                key={index}
+                variants={fadeInUp}
+                className={`relative overflow-hidden group cursor-pointer ${spanPatterns[index % spanPatterns.length]}`}
               >
-                <p 
-                  className="text-white text-center text-lg p-4"
-                  style={{ fontFamily: "'Tenor Sans', sans-serif" }}
-                >
-                  View Photo
-                </p>
+                <img
+                  src={getImageUrl(image)}
+                  alt={`${venue.name} ${index + 1}`}
+                  className="w-full h-full object-cover transition-all duration-700"
+                  style={{
+                    filter: 'grayscale(100%)',
+                    transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(0%)';
+                    e.currentTarget.style.transform = 'scale(1.1)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.filter = 'grayscale(100%)';
+                    e.currentTarget.style.transform = 'scale(1)';
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-500 flex items-end">
+                  <div
+                    className="p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500"
+                    style={{ transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)' }}
+                  >
+                    <p
+                      className="text-white"
+                      style={{
+                        fontFamily: "'Tenor Sans', sans-serif",
+                        fontSize: '11px',
+                        letterSpacing: '0.15em',
+                        textTransform: 'uppercase',
+                      }}
+                    >
+                      {venue.name}
+                    </p>
+                  </div>
+                </div>
               </motion.div>
-            </motion.div>
-          ))}
-        </div>
+            ))}
+          </motion.div>
+        ) : (
+          <p
+            className="text-center py-16"
+            style={{
+              fontFamily: "'Tenor Sans', sans-serif",
+              color: '#73555d',
+              opacity: 0.5,
+            }}
+          >
+            Gallery coming soon.
+          </p>
+        )}
       </div>
     </div>
   );

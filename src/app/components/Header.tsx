@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
+import twcLogo from '../../assets/TWC_logo.png';
 
 const navLinks = [
   { title: 'About Us', path: '/' },
@@ -57,7 +58,7 @@ export function Header() {
           <div className="flex justify-between items-center h-24">
             <div className="flex-shrink-0">
               <Link to="/">
-                <img className="h-12" src="/src/assets/TWC_logo.png" alt="The Wedding Coach" />
+                <img className="h-12" src={twcLogo} alt="The Wedding Coach" />
               </Link>
             </div>
             <nav className="hidden md:flex items-center space-x-10">

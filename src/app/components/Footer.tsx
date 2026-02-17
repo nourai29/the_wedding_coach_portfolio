@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Instagram } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -30,7 +31,11 @@ export function Footer() {
           <ul className="space-y-2" style={{ fontFamily: "'Tenor Sans', sans-serif" }}>
             <li>Email: <a href="mailto:info@twc-uae.com" className="hover:underline">info@twc-uae.com</a></li>
             <li>Phone: <a href="tel:+971529463394" className="hover:underline">0529463394</a></li>
-            <li>Instagram: <a href="https://www.instagram.com/theweddingcoach.uae" target="_blank" rel="noopener noreferrer" className="hover:underline">@theweddingcoach.uae</a></li>
+            <li>
+              <a href="https://www.instagram.com/theweddingcoach.uae" target="_blank" rel="noopener noreferrer" className="inline-block hover:opacity-70 transition-opacity duration-300">
+                <Instagram size={20} />
+              </a>
+            </li>
           </ul>
         </div>
       </div>
