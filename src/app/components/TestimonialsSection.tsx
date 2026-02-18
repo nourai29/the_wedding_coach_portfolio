@@ -1,58 +1,44 @@
 import { motion } from 'motion/react';
-import { useInView } from 'motion/react';
-import { useRef, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { testimonials } from '../../assets/testimonials';
 import { MagneticArrowButton } from './MagneticArrowButton';
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 1, 0.5, 1]
-    }
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.2
-    }
-  }
-};
+import { fadeInUp, staggerContainer, useScrollAnimation } from '../lib/animations';
+import { COLORS, FONTS } from '../lib/tokens';
 
 export function TestimonialsSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const { ref, isInView } = useScrollAnimation(0.2);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const handlePrev = () => {
+    setIsPaused(true);
     setActiveIndex((prevIndex) => (prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1));
+    setTimeout(() => setIsPaused(false), 5000);
   };
 
   const handleNext = () => {
+    setIsPaused(true);
     setActiveIndex((prevIndex) => (prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1));
+    setTimeout(() => setIsPaused(false), 5000);
   };
+
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setActiveIndex((i) => (i === testimonials.length - 1 ? 0 : i + 1));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
     <motion.section
       ref={ref}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      variants={staggerContainer}
-      className="relative py-16"
-      style={{
-        backgroundColor: '#FFFBF1',
-        paddingLeft: '15vw',
-        paddingRight: '15vw',
-      }}
+      variants={staggerContainer()}
+      className="relative py-28 px-6 md:px-[12vw]"
+      style={{ backgroundColor: COLORS.brand }}
     >
       <motion.div
         variants={fadeInUp}
@@ -60,92 +46,134 @@ export function TestimonialsSection() {
       >
         <p
           style={{
-            fontFamily: "'Tenor Sans', sans-serif",
-            fontSize: '14px',
-            letterSpacing: '0.2em',
-            color: '#73555d',
+            fontFamily: FONTS.body,
+            fontSize: '13px',
+            letterSpacing: '0.3em',
+            color: COLORS.roseGoldLight,
             textTransform: 'uppercase',
-            opacity: 0.8,
-            marginBottom: '12px',
+            fontWeight: 400,
+            marginBottom: '16px',
           }}
         >
           Kind Words
         </p>
         <h2
           style={{
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: FONTS.display,
             fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             lineHeight: '1.2',
-            color: '#73555d',
+            color: COLORS.cream,
             fontWeight: 500,
-            marginBottom: '48px'
+            marginBottom: '56px'
           }}
         >
           What Our Couples Say
         </h2>
-        <div className="flex items-center max-w-4xl mx-auto">
-          {/* Left arrow — fixed position outside content */}
-          <div className="flex-shrink-0">
-            <MagneticArrowButton onClick={handlePrev} className="p-2">
-              <ArrowLeft className="w-6 h-6 text-[#73555d]" strokeWidth={0.5} />
-            </MagneticArrowButton>
-          </div>
 
-          {/* Quote content */}
-          <div className="flex-1 px-8 md:px-12 min-h-[200px] flex flex-col justify-center">
+        {/* Testimonial Card */}
+        <div
+          className="max-w-3xl mx-auto"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          <div
+            className="relative px-8 py-12 md:px-16 md:py-16"
+            style={{
+              border: '1px solid rgba(255, 251, 241, 0.1)',
+            }}
+          >
+            {/* Decorative quote mark */}
+            <div
+              className="absolute top-6 left-8 md:left-12"
+              style={{
+                fontFamily: FONTS.display,
+                fontSize: '80px',
+                lineHeight: '1',
+                color: COLORS.roseGoldLight,
+                opacity: 0.15,
+              }}
+            >
+              &ldquo;
+            </div>
+
+            {/* Decorative top line */}
+            <div
+              className="w-12 h-px mx-auto mb-10"
+              style={{ backgroundColor: COLORS.roseGold, opacity: 0.4 }}
+            />
+
             <motion.div
               key={activeIndex}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1] }}
             >
               <p
                 style={{
-                  fontFamily: "'Tenor Sans', sans-serif",
-                  fontSize: '18px',
-                  lineHeight: '1.8',
-                  color: '#73555d',
-                  fontWeight: 300,
-                  opacity: 0.8,
-                  marginBottom: '16px'
+                  fontFamily: FONTS.display,
+                  fontSize: 'clamp(16px, 2vw, 20px)',
+                  lineHeight: '1.9',
+                  color: COLORS.cream,
+                  fontWeight: 400,
+                  fontStyle: 'italic',
+                  marginBottom: '28px',
+                  opacity: 0.9,
                 }}
               >
                 "{testimonials[activeIndex].quote}"
               </p>
+
+              {/* Decorative line before author */}
+              <div
+                className="w-8 h-px mx-auto mb-4"
+                style={{ backgroundColor: COLORS.roseGoldLight, opacity: 0.3 }}
+              />
+
               <p
                 style={{
-                  fontFamily: "'Tenor Sans', sans-serif",
-                  fontSize: '14px',
-                  lineHeight: '1.8',
-                  color: '#73555d',
+                  fontFamily: FONTS.body,
+                  fontSize: '12px',
+                  color: COLORS.roseGoldLight,
                   fontWeight: 400,
-                  letterSpacing: '0.1em'
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
                 }}
               >
-                - {testimonials[activeIndex].author}
+                {testimonials[activeIndex].author}
               </p>
             </motion.div>
           </div>
 
-          {/* Right arrow — fixed position outside content */}
-          <div className="flex-shrink-0">
+          {/* Navigation */}
+          <div className="flex items-center justify-center mt-10 gap-8">
+            <MagneticArrowButton onClick={handlePrev} className="p-2">
+              <ArrowLeft className="w-5 h-5" strokeWidth={1} style={{ color: COLORS.cream }} />
+            </MagneticArrowButton>
+
+            <div className="flex space-x-3">
+              {testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setActiveIndex(index);
+                    setIsPaused(true);
+                    setTimeout(() => setIsPaused(false), 5000);
+                  }}
+                  className="rounded-full transition-all duration-500"
+                  style={{
+                    width: activeIndex === index ? '24px' : '6px',
+                    height: '6px',
+                    backgroundColor: activeIndex === index ? COLORS.roseGoldLight : 'rgba(255, 251, 241, 0.25)',
+                  }}
+                />
+              ))}
+            </div>
+
             <MagneticArrowButton onClick={handleNext} className="p-2">
-              <ArrowRight className="w-6 h-6 text-[#73555d]" strokeWidth={0.5} />
+              <ArrowRight className="w-5 h-5" strokeWidth={1} style={{ color: COLORS.cream }} />
             </MagneticArrowButton>
           </div>
-        </div>
-
-        <div className="flex justify-center space-x-2 mt-8">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveIndex(index)}
-              className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                activeIndex === index ? 'bg-[#73555d]' : 'bg-gray-300'
-              }`}
-            ></button>
-          ))}
         </div>
       </motion.div>
     </motion.section>

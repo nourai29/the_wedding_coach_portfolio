@@ -1,10 +1,10 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { portfolioImages } from '../../portfolio';
+import { fadeInUp, staggerContainer, useScrollAnimation } from '../lib/animations';
 
 // Eagerly import all portfolio images so Vite can resolve them
-const imageModules = import.meta.glob('/src/assets/portfolio/*', { eager: true, import: 'default' }) as Record<string, string>;
+const imageModules = import.meta.glob('/src/assets/portfolio-optimized/*', { eager: true, import: 'default' }) as Record<string, string>;
 
 // Build a normalized lookup: strip leading spaces from filenames for matching
 const normalizedImageMap: Record<string, string> = {};
@@ -17,29 +17,6 @@ for (const [key, url] of Object.entries(imageModules)) {
 const getImageUrl = (imagePath: string) => {
   const key = `/${imagePath}`;
   return imageModules[key] || normalizedImageMap[key] || '';
-};
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 1, 0.5, 1]
-    }
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.2
-    }
-  }
 };
 
 // Assign editorial grid spans in a repeating pattern for visual variety
@@ -57,12 +34,11 @@ const spanPatterns = [
 ];
 
 export function PortfolioPage() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const { ref, isInView } = useScrollAnimation(0.1);
 
   return (
     <div className="pt-20" style={{ backgroundColor: '#FFFBF1' }}>
-      <div className="pb-16" style={{ paddingLeft: '8vw', paddingRight: '8vw' }}>
+      <div className="pb-16 px-4 md:px-[8vw]">
         <div className="text-center mb-12 pt-8">
           <p
             style={{
@@ -109,9 +85,9 @@ export function PortfolioPage() {
           ref={ref}
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
-          variants={staggerContainer}
+          variants={staggerContainer(0.06, 0.2)}
           className="grid grid-cols-2 md:grid-cols-4 gap-3"
-          style={{ gridAutoRows: '180px' }}
+          style={{ gridAutoRows: '200px' }}
         >
           {portfolioImages.map((image, index) => (
             <motion.div
@@ -122,22 +98,24 @@ export function PortfolioPage() {
               <img
                 src={getImageUrl(image.src)}
                 alt={image.alt}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-all duration-700"
                 style={{
-                  filter: 'grayscale(100%)',
+                  filter: 'saturate(0) brightness(1.1)',
                   transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.filter = 'grayscale(0%)';
-                  e.currentTarget.style.transform = 'scale(1.1)';
+                  e.currentTarget.style.filter = 'saturate(1) brightness(1)';
+                  e.currentTarget.style.transform = 'scale(1.3)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.filter = 'grayscale(100%)';
+                  e.currentTarget.style.filter = 'saturate(0) brightness(1.1)';
                   e.currentTarget.style.transform = 'scale(1)';
                 }}
               />
               {/* Hover overlay with couple name */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-500 flex items-end">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-end">
                 <div
                   className="p-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500"
                   style={{ transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)' }}
@@ -192,7 +170,7 @@ export function PortfolioPage() {
           </p>
           <Link
             to="/contact"
-            className="inline-block px-12 py-4 tracking-[0.15em] uppercase text-[11px] transition-all duration-500"
+            className="inline-block active:scale-95 px-12 py-4 tracking-[0.15em] uppercase text-[11px] hover:tracking-[0.25em] transition-all duration-500"
             style={{
               fontFamily: "'Tenor Sans', sans-serif",
               backgroundColor: '#73555d',

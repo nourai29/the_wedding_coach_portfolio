@@ -1,33 +1,11 @@
-import React, { useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useInView } from 'framer-motion';
+import React from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { packages } from '../../packages';
-import { Check } from 'lucide-react';
-import brochurePdf from '../../assets/twc_brochure_2026.pdf';
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 1, 0.5, 1]
-    }
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.2
-    }
-  }
-};
+import { Check, Calendar, Compass, Gem } from 'lucide-react';
+import brochurePdf from '../../assets/TWC_Wedding_Packages.pdf';
+import { fadeInUp, staggerContainer, useScrollAnimation } from '../lib/animations';
+import { COLORS } from '../lib/tokens';
 
 const checklistItemStagger = {
   hidden: { opacity: 0, y: 20 },
@@ -44,54 +22,60 @@ const checklistItemStagger = {
 const packageSlug = (name: string) =>
   name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
+const packageIcons = [Calendar, Compass, Gem];
+
 export function PackagesPage() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const { ref, isInView } = useScrollAnimation(0.1);
   const navigate = useNavigate();
 
   return (
     <div className="pt-20" style={{ backgroundColor: '#FFFBF1' }}>
-      <div className="p-8 pb-16">
+      {/* Header */}
+      <div className="text-center pt-8 pb-4 px-6">
         <p
-          className="text-center mb-2"
           style={{
             fontFamily: "'Tenor Sans', sans-serif",
-            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-            lineHeight: '1.8',
+            fontSize: '15px',
+            letterSpacing: '0.25em',
             color: '#73555d',
-            fontWeight: 300,
-            opacity: 0.8
+            textTransform: 'uppercase',
+            fontWeight: 400,
+            marginBottom: '16px',
           }}
         >
           Our Services
         </p>
-        <h2
-          className="text-center mb-4"
+        <h1
           style={{
             fontFamily: "'Playfair Display', serif",
-            fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             lineHeight: '1.2',
             color: '#73555d',
-            fontWeight: 500
+            fontWeight: 500,
+            marginBottom: '16px',
           }}
         >
           Our Packages
-        </h2>
+        </h1>
         <p
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="max-w-2xl mx-auto"
           style={{
             fontFamily: "'Tenor Sans', sans-serif",
-            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+            fontSize: '15px',
             lineHeight: '1.8',
             color: '#73555d',
             fontWeight: 300,
-            opacity: 0.8
+            opacity: 0.8,
+            marginBottom: '48px'
           }}
         >
           Three thoughtfully designed packages to match where you are in your planning journey.
         </p>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
+      {/* Package Cards */}
+      <div className="px-4 md:px-[8vw] pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
           {packages.map((pkg, index) => (
             <motion.div
               key={index}
@@ -99,29 +83,59 @@ export function PackagesPage() {
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
               variants={fadeInUp}
-              className={`relative flex flex-col items-center p-10 rounded-lg shadow-sm transition-all duration-300 ease-in-out ${
-                pkg.isMostPopular ? 'border-2 border-[#73555D]' : 'border'
-              }`}
+              className="relative flex flex-col items-center transition-all duration-500"
               style={{
-                backgroundColor: '#FFFBF1',
-                padding: '40px',
-                border: pkg.isMostPopular ? '2px solid #73555D' : '1px solid rgba(115, 85, 93, 0.2)',
+                padding: '40px 32px',
+                border: pkg.isMostPopular
+                  ? '1px solid rgba(115, 85, 93, 0.5)'
+                  : '1px solid rgba(115, 85, 93, 0.15)',
               }}
               whileHover={{
-                scale: 1.03,
-                boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.1)',
+                y: -4,
+                boxShadow: `0 12px 40px ${COLORS.roseGoldAlpha(0.12)}`,
               }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
             >
+              {pkg.isMostPopular && (
+                <div
+                  className="absolute -top-3 left-1/2 -translate-x-1/2"
+                  style={{
+                    fontFamily: "'Tenor Sans', sans-serif",
+                    fontSize: '10px',
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: '#FFFBF1',
+                    backgroundColor: COLORS.roseGold,
+                    padding: '4px 16px',
+                  }}
+                >
+                  Most Popular
+                </div>
+              )}
+
+              {/* Package Icon */}
+              <div
+                className="mb-5 inline-flex items-center justify-center"
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  border: `1px solid ${COLORS.roseGold}`,
+                  borderRadius: '50%',
+                  color: COLORS.roseGold,
+                }}
+              >
+                {React.createElement(packageIcons[index], { className: 'w-5 h-5' })}
+              </div>
+
               <h3
-                className="mb-4 text-center sticky top-0 bg-[#FFFBF1] w-full py-2 z-10"
+                className="mb-3 text-center"
                 style={{
                   fontFamily: "'Tenor Sans', sans-serif",
-                  fontSize: '28px',
-                  letterSpacing: '0.15em',
+                  fontSize: '14px',
+                  letterSpacing: '0.2em',
                   color: '#73555d',
                   textTransform: 'uppercase',
-                  fontWeight: 500,
+                  fontWeight: 400,
                 }}
               >
                 {pkg.name}
@@ -130,23 +144,22 @@ export function PackagesPage() {
               <p
                 className="mb-4 text-center"
                 style={{
-                  fontFamily: "'Tenor Sans', sans-serif",
-                  fontSize: '16px',
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: '1.15rem',
                   fontStyle: 'italic',
                   color: '#73555d',
-                  opacity: 0.9,
                 }}
               >
                 {pkg.role}
               </p>
 
-              <div className="w-1/3 h-px bg-[#73555D] opacity-30 my-6" />
+              <div className="w-10 h-px bg-[#73555D] opacity-25 my-6" />
 
               <p
                 className="mb-8 text-center"
                 style={{
                   fontFamily: "'Tenor Sans', sans-serif",
-                  fontSize: '15px',
+                  fontSize: '14px',
                   lineHeight: '1.8',
                   color: '#73555d',
                   opacity: 0.7,
@@ -156,14 +169,15 @@ export function PackagesPage() {
               </p>
 
               <p
-                className="mb-4 self-start"
+                className="mb-5 self-start"
                 style={{
                   fontFamily: "'Tenor Sans', sans-serif",
-                  fontSize: '12px',
-                  letterSpacing: '0.1em',
+                  fontSize: '11px',
+                  letterSpacing: '0.15em',
                   color: '#73555d',
                   textTransform: 'uppercase',
-                  fontWeight: 600,
+                  fontWeight: 400,
+                  opacity: 0.5,
                 }}
               >
                 What's Included
@@ -171,7 +185,7 @@ export function PackagesPage() {
 
               <motion.ul
                 className="text-left w-full space-y-3"
-                variants={staggerContainer}
+                variants={staggerContainer(0.15, 0.2)}
               >
                 <AnimatePresence>
                   {isInView && pkg.features.map((feature, featIndex) => (
@@ -181,12 +195,13 @@ export function PackagesPage() {
                       className="flex items-start"
                       style={{
                         fontFamily: "'Tenor Sans', sans-serif",
-                        fontSize: '14px',
+                        fontSize: '13px',
+                        lineHeight: '1.6',
                         color: '#73555d',
-                        opacity: 0.8,
+                        opacity: 0.75,
                       }}
                     >
-                      <Check size={16} strokeWidth={1} className="flex-shrink-0 mr-2 text-[#73555D]" />
+                      <Check size={14} strokeWidth={1.5} className="flex-shrink-0 mr-3 mt-0.5" style={{ color: COLORS.roseGold }} />
                       {feature.text}
                     </motion.li>
                   ))}
@@ -195,10 +210,23 @@ export function PackagesPage() {
 
               <button
                 onClick={() => navigate(`/contact?package=${packageSlug(pkg.name)}`)}
-                className="mt-10 w-full px-8 py-4 uppercase tracking-widest text-base font-medium rounded-md transition-colors duration-300
-                           bg-transparent text-[#73555D] border border-[#73555D] hover:bg-[#73555D] hover:text-[#FFFBF1]"
+                className="mt-10 w-full px-8 py-4 uppercase tracking-[0.15em] text-[11px] active:scale-95 transition-all duration-500"
                 style={{
                   fontFamily: "'Tenor Sans', sans-serif",
+                  backgroundColor: 'transparent',
+                  color: '#73555d',
+                  border: '1px solid #73555d',
+                  transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#73555d';
+                  e.currentTarget.style.color = '#FFFBF1';
+                  e.currentTarget.style.letterSpacing = '0.25em';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                  e.currentTarget.style.color = '#73555d';
+                  e.currentTarget.style.letterSpacing = '0.15em';
                 }}
               >
                 Let's Connect!
@@ -214,6 +242,20 @@ export function PackagesPage() {
         style={{ backgroundColor: '#73555d' }}
       >
         <div className="max-w-2xl mx-auto px-6">
+          <p
+            style={{
+              fontFamily: "'Tenor Sans', sans-serif",
+              fontSize: '15px',
+              letterSpacing: '0.25em',
+              color: '#FFFBF1',
+              textTransform: 'uppercase',
+              fontWeight: 400,
+              opacity: 0.5,
+              marginBottom: '16px',
+            }}
+          >
+            Learn More
+          </p>
           <h2
             style={{
               fontFamily: "'Playfair Display', serif",
@@ -232,7 +274,7 @@ export function PackagesPage() {
               fontSize: '15px',
               lineHeight: '1.8',
               color: '#FFFBF1',
-              opacity: 0.7,
+              opacity: 0.6,
               marginBottom: '40px'
             }}
           >
@@ -241,7 +283,7 @@ export function PackagesPage() {
           <a
             href={brochurePdf}
             download
-            className="inline-flex items-center gap-3 px-12 py-4 tracking-[0.15em] uppercase text-[11px] transition-all duration-500"
+            className="inline-flex items-center gap-3 active:scale-95 px-12 py-4 tracking-[0.15em] uppercase text-[11px] hover:tracking-[0.25em] transition-all duration-500"
             style={{
               fontFamily: "'Tenor Sans', sans-serif",
               backgroundColor: '#FFFBF1',

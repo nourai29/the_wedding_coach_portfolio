@@ -1,32 +1,9 @@
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'motion/react';
 import { Heart, Sparkles, Users } from 'lucide-react';
 import { MagneticButton } from './MagneticButton';
 import { useNavigate } from 'react-router-dom';
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 1, 0.5, 1]
-    }
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.25,
-      delayChildren: 0.2
-    }
-  }
-};
+import { fadeInUp, fadeInLeft, fadeInRight, staggerContainer, useScrollAnimation } from '../lib/animations';
+import { COLORS, FONTS } from '../lib/tokens';
 
 interface Feature {
   icon: React.ReactNode;
@@ -52,9 +29,10 @@ const features: Feature[] = [
   }
 ];
 
+const cardVariants = [fadeInLeft, fadeInUp, fadeInRight];
+
 export function FeaturesSection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const { ref, isInView } = useScrollAnimation(0.15);
   const navigate = useNavigate();
 
   const handleExploreServicesClick = () => {
@@ -66,33 +44,31 @@ export function FeaturesSection() {
       ref={ref}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      variants={staggerContainer}
-      className="relative py-16"
-      style={{ 
+      variants={staggerContainer(0.15, 0.2)}
+      className="relative py-28 px-6 md:px-[10vw]"
+      style={{
         backgroundColor: '#FFFBF1',
-        paddingLeft: '15vw',
-        paddingRight: '15vw'
       }}
     >
-      {/* Section header */}
-      <motion.div 
+      {/* Section header — left-aligned for editorial feel */}
+      <motion.div
         variants={fadeInUp}
-        className="mb-24 max-w-2xl"
+        className="mb-20 max-w-2xl"
       >
-        <div 
+        <div
           className="w-16 mb-8"
           style={{
             height: '0.5px',
-            backgroundColor: '#73555d',
+            backgroundColor: COLORS.roseGold,
             opacity: 0.5
           }}
         />
-        
-        <h2 
+
+        <h2
           style={{
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: FONTS.display,
             fontSize: 'clamp(2.5rem, 6vw, 5rem)',
-            lineHeight: '1.2',
+            lineHeight: '1.15',
             letterSpacing: '0.02em',
             color: '#73555d',
             fontWeight: 500
@@ -102,12 +78,12 @@ export function FeaturesSection() {
           <br />
           EXPERIENCES
         </h2>
-        <p 
-          className="max-w-2xl mt-4"
+        <p
+          className="max-w-xl mt-5"
           style={{
-            fontFamily: "'Tenor Sans', sans-serif",
-            fontSize: '15px',
-            lineHeight: '1.8',
+            fontFamily: FONTS.body,
+            fontSize: '16px',
+            lineHeight: '1.9',
             color: '#73555d',
             fontWeight: 300,
             opacity: 0.8
@@ -117,33 +93,34 @@ export function FeaturesSection() {
         </p>
       </motion.div>
 
-      {/* Features grid - asymmetrical */}
-      <motion.div 
-        variants={staggerContainer}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 lg:gap-20"
+      {/* Features grid — each card animates from a different direction */}
+      <motion.div
+        variants={staggerContainer(0.12, 0.1)}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10"
       >
         {features.map((feature, index) => (
           <motion.div
             key={index}
-            variants={fadeInUp}
-            className="relative group p-8 border rounded-lg" // Removed hover:shadow-lg and transition-shadow
+            variants={cardVariants[index]}
+            className="relative group p-10 transition-all duration-500"
             style={{
-                border: '1px solid rgba(115, 85, 93, 0.2)', // #73555D with 20% opacity
-                backgroundColor: '#FFFBF1', // Ensure background color for shadow
+              border: '1px solid rgba(115, 85, 93, 0.12)',
+              backgroundColor: '#FFFBF1',
             }}
-            whileHover={{ 
-                scale: 1.03, 
-                boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.1)', // More pronounced shadow
+            whileHover={{
+              y: -6,
+              boxShadow: `0 16px 48px ${COLORS.roseGoldAlpha(0.1)}`,
+              borderColor: COLORS.roseGoldAlpha(0.3),
             }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
           >
-            {/* Icon with circular border */}
-            <div 
-              className="mb-8 inline-flex items-center justify-center"
+            {/* Icon with circular border — fills with rose gold on card hover */}
+            <div
+              className="mb-8 inline-flex items-center justify-center group-hover:bg-[#B76E79]/15"
               style={{
                 width: '72px',
                 height: '72px',
-                border: '0.5px solid #73555d',
+                border: `1px solid ${COLORS.roseGold}`,
                 borderRadius: '50%',
                 color: '#73555d',
                 opacity: 0.6,
@@ -154,11 +131,11 @@ export function FeaturesSection() {
             </div>
 
             {/* Title */}
-            <h3 
+            <h3
               className="mb-4"
               style={{
-                fontFamily: "'Tenor Sans', sans-serif",
-                fontSize: '12px',
+                fontFamily: FONTS.body,
+                fontSize: '13px',
                 letterSpacing: '0.15em',
                 color: '#73555d',
                 fontWeight: 400
@@ -168,11 +145,11 @@ export function FeaturesSection() {
             </h3>
 
             {/* Description */}
-            <p 
+            <p
               style={{
-                fontFamily: "'Tenor Sans', sans-serif",
-                fontSize: '15px',
-                lineHeight: '1.8',
+                fontFamily: FONTS.body,
+                fontSize: '16px',
+                lineHeight: '1.9',
                 color: '#73555d',
                 fontWeight: 300,
                 opacity: 0.7
@@ -182,12 +159,12 @@ export function FeaturesSection() {
             </p>
 
             {/* Decorative corner accent */}
-            <div 
-              className="absolute -top-4 -right-4 opacity-0 group-hover:opacity-30 transition-opacity"
+            <div
+              className="absolute -top-3 -right-3 opacity-0 group-hover:opacity-20 transition-opacity"
               style={{
                 width: '40px',
                 height: '40px',
-                border: '0.5px solid #73555d',
+                border: `0.5px solid ${COLORS.roseGold}`,
                 borderRadius: '50%',
                 transitionDuration: '600ms',
                 transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)'
@@ -198,9 +175,9 @@ export function FeaturesSection() {
       </motion.div>
 
       {/* CTA */}
-      <motion.div 
+      <motion.div
         variants={fadeInUp}
-        className="mt-24 text-center"
+        className="mt-20 text-center"
       >
         <MagneticButton variant="text" onClick={handleExploreServicesClick}>Explore Our Services</MagneticButton>
       </motion.div>

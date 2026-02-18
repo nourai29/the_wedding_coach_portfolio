@@ -138,6 +138,22 @@
     );
   }
 
+  .bg-dot-pattern {
+    background-image: radial-gradient(circle, rgba(115, 85, 93, 0.035) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Continuous infinite venue carousel */
+  @keyframes venue-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .venue-carousel-track {
+    animation: venue-scroll 45s linear infinite;
+    width: max-content;
+  }
+
   /**
   * Default typography styles for HTML elements (h1-h4, p, label, button, input).
   * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.

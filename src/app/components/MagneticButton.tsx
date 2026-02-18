@@ -77,7 +77,7 @@ export function MagneticButton({ children, onClick, variant = 'outlined', classN
         damping: 15,
         mass: 0.1
       }}
-      className={twMerge("rounded-full border border-[#73555d] px-12 py-4 tracking-[0.15em] uppercase text-[11px] text-[#73555d] hover:bg-[#73555d] hover:text-[#FFFBF1] transition-all duration-[600ms]", className)}
+      className={twMerge("border border-[#73555d] px-12 py-4 tracking-[0.15em] uppercase text-[11px] text-[#73555d] hover:bg-[#73555d] hover:text-[#FFFBF1] hover:tracking-[0.25em] transition-all duration-[600ms]", className)}
       style={{
         fontFamily: "'Tenor Sans', sans-serif",
         transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',

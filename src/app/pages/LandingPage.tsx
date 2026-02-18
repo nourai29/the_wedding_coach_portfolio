@@ -1,10 +1,9 @@
 import { HeroSection } from '../components/HeroSection';
-import { FeaturesSection } from '../components/FeaturesSection';
 import { MeetTheTeam } from '../components/MeetTheTeam';
 import { StatsSection } from '../components/StatsSection';
 import { TestimonialsSection } from '../components/TestimonialsSection';
 import { PortfolioSection } from '../components/PortfolioSection';
-import { ConnectSection } from '../components/ConnectSection';
+import { ServicesSection } from '../components/ServicesSection';
 import { Divider } from '../components/Divider';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,35 +33,31 @@ export function LandingPage() {
 
   return (
     <main className="relative z-10">
+      {/* Full-bleed hero with imagery */}
       <HeroSection onCTAClick={handleCTAClick} />
 
-      <Divider />
-
+      {/* Meet the team */}
       <MeetTheTeam />
 
       <Divider />
 
+      {/* Combined services & packages section */}
       <div id="about-us">
-        <FeaturesSection />
+        <ServicesSection />
       </div>
 
-      <Divider />
-
+      {/* Stats + venue carousel */}
       <StatsSection venueLogos={venueLogos} />
 
       <Divider />
 
+      {/* Testimonials */}
       <TestimonialsSection />
 
-      <Divider />
-
+      {/* Portfolio */}
       <div id="portfolio">
         <PortfolioSection />
       </div>
-
-      <Divider />
-
-      <ConnectSection />
     </main>
   );
 }

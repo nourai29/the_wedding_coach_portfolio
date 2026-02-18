@@ -1,37 +1,37 @@
+import { COLORS } from '../lib/tokens';
+
 export function Divider() {
   return (
-    <div 
-      className="flex items-center justify-center py-12"
-      style={{
-        backgroundColor: '#FFFBF1',
-        paddingLeft: '15vw',
-        paddingRight: '15vw'
-      }}
+    <div
+      className="flex items-center justify-center py-20 px-6 md:px-[15vw]"
+      style={{ backgroundColor: '#FFFBF1' }}
     >
-      <div 
+      <div
         style={{
-          width: '120px',
-          height: '0.5px',
-          background: 'linear-gradient(to right, transparent, #73555d, transparent)',
-          opacity: 0.3
-        }}
-      />
-      <div 
-        style={{
-          width: '6px',
-          height: '6px',
-          backgroundColor: '#73555d',
-          borderRadius: '50%',
+          flex: 1,
+          maxWidth: '160px',
+          height: '1px',
+          background: `linear-gradient(to right, transparent, ${COLORS.roseGold})`,
           opacity: 0.4,
-          margin: '0 16px'
         }}
       />
-      <div 
+      <div
         style={{
-          width: '120px',
-          height: '0.5px',
-          background: 'linear-gradient(to left, transparent, #73555d, transparent)',
-          opacity: 0.3
+          width: '8px',
+          height: '8px',
+          backgroundColor: COLORS.roseGold,
+          borderRadius: '50%',
+          opacity: 0.5,
+          margin: '0 20px',
+        }}
+      />
+      <div
+        style={{
+          flex: 1,
+          maxWidth: '160px',
+          height: '1px',
+          background: `linear-gradient(to left, transparent, ${COLORS.roseGold})`,
+          opacity: 0.4,
         }}
       />
     </div>

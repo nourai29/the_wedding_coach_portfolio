@@ -1,36 +1,13 @@
 import { motion } from 'motion/react';
-import { useInView } from 'motion/react';
-import { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
+import { fadeInUp, staggerContainer, useScrollAnimation } from '../lib/animations';
+import { COLORS } from '../lib/tokens';
 
 // Eagerly import all venue logos so Vite can resolve them
 const venueModules = import.meta.glob('/src/assets/venues/*', { eager: true, import: 'default' }) as Record<string, string>;
 
 const getVenueUrl = (path: string) => {
   return venueModules[`/${path}`] || '';
-};
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 1, 0.5, 1]
-    }
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.2
-    }
-  }
 };
 
 interface Stat {
@@ -54,36 +31,30 @@ interface StatsSectionProps {
 }
 
 export function StatsSection({ venueLogos }: StatsSectionProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
-  const [carouselIndex, setCarouselIndex] = useState(0);
-  const logosPerPage = 4;
-  const maxIndex = Math.max(0, venueLogos.length - logosPerPage);
-
-  const handlePrev = () => setCarouselIndex((i) => Math.max(0, i - 1));
-  const handleNext = () => setCarouselIndex((i) => Math.min(maxIndex, i + 1));
+  const { ref, isInView } = useScrollAnimation(0.2);
+  const [isPaused, setIsPaused] = useState(false);
 
   return (
     <motion.section
       ref={ref}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
-      variants={staggerContainer}
+      variants={staggerContainer()}
       className="relative"
       style={{ backgroundColor: '#FFFBF1' }}
     >
       {/* Stats */}
-      <div className="py-20" style={{ paddingLeft: '15vw', paddingRight: '15vw' }}>
+      <div className="py-20 px-6 md:px-[15vw]">
         <motion.div variants={fadeInUp} className="text-center mb-16">
           <p
             style={{
               fontFamily: "'Tenor Sans', sans-serif",
-              fontSize: '14px',
-              letterSpacing: '0.2em',
+              fontSize: '15px',
+              letterSpacing: '0.25em',
               color: '#73555d',
               textTransform: 'uppercase',
-              opacity: 0.8,
-              marginBottom: '12px'
+              fontWeight: 400,
+              marginBottom: '16px'
             }}
           >
             Our Story
@@ -101,7 +72,7 @@ export function StatsSection({ venueLogos }: StatsSectionProps) {
           </h2>
         </motion.div>
 
-        <motion.div variants={staggerContainer} className="grid grid-cols-3 gap-8 max-w-3xl mx-auto">
+        <motion.div variants={staggerContainer()} className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">
           {stats.map((stat, index) => (
             <motion.div
               key={index}
@@ -113,7 +84,7 @@ export function StatsSection({ venueLogos }: StatsSectionProps) {
                   fontFamily: "'Playfair Display', serif",
                   fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
                   lineHeight: '1',
-                  color: '#73555d',
+                  color: COLORS.roseGold,
                   fontWeight: 500,
                   marginBottom: '12px'
                 }}
@@ -123,7 +94,7 @@ export function StatsSection({ venueLogos }: StatsSectionProps) {
               <div
                 style={{
                   fontFamily: "'Tenor Sans', sans-serif",
-                  fontSize: '11px',
+                  fontSize: '13px',
                   letterSpacing: '0.15em',
                   color: '#73555d',
                   textTransform: 'uppercase',
@@ -137,8 +108,13 @@ export function StatsSection({ venueLogos }: StatsSectionProps) {
         </motion.div>
       </div>
 
-      {/* Venues Carousel */}
-      <div className="py-16 border-t" style={{ borderColor: 'rgba(115, 85, 93, 0.1)', paddingLeft: '10vw', paddingRight: '10vw' }}>
+      {/* Venues — Continuous Infinite Carousel */}
+      <div
+        className="py-16 border-t overflow-hidden"
+        style={{ borderColor: 'rgba(115, 85, 93, 0.1)' }}
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
         <motion.div variants={fadeInUp} className="text-center mb-10">
           <p
             style={{
@@ -154,56 +130,45 @@ export function StatsSection({ venueLogos }: StatsSectionProps) {
           </p>
         </motion.div>
 
-        <motion.div variants={fadeInUp} className="relative flex items-center">
-          {/* Left arrow */}
-          <button
-            onClick={handlePrev}
-            disabled={carouselIndex === 0}
-            className="flex-shrink-0 p-2 transition-opacity duration-300"
-            style={{ color: '#73555d', opacity: carouselIndex === 0 ? 0.2 : 0.6 }}
-          >
-            <ChevronLeft size={20} strokeWidth={1} />
-          </button>
-
-          {/* Logos */}
-          <div className="flex-1 overflow-hidden">
-            <div
-              className="flex items-center transition-transform duration-500"
-              style={{
-                transform: `translateX(-${carouselIndex * (100 / logosPerPage)}%)`,
-                transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
-              }}
-            >
-              {venueLogos.map((logo, index) => {
-                const scale = logo.scale || 1;
-                return (
-                  <div
-                    key={index}
-                    className="flex-shrink-0 flex items-center justify-center px-6"
-                    style={{ width: `${100 / logosPerPage}%` }}
-                  >
-                    <img
-                      src={getVenueUrl(logo.src)}
-                      alt={`Venue ${index + 1}`}
-                      className="w-auto object-contain opacity-40 hover:opacity-70 transition-opacity duration-300"
-                      style={{ filter: 'grayscale(100%)', height: `${4 * scale}rem`, maxWidth: `${160 * scale}px` }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Right arrow */}
-          <button
-            onClick={handleNext}
-            disabled={carouselIndex >= maxIndex}
-            className="flex-shrink-0 p-2 transition-opacity duration-300"
-            style={{ color: '#73555d', opacity: carouselIndex >= maxIndex ? 0.2 : 0.6 }}
-          >
-            <ChevronRight size={20} strokeWidth={1} />
-          </button>
-        </motion.div>
+        <div
+          className="venue-carousel-track flex items-center"
+          style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
+        >
+          {/* Render logos twice for seamless loop */}
+          {[...venueLogos, ...venueLogos].map((logo, index) => {
+            const scale = logo.scale || 1;
+            return (
+              <div
+                key={index}
+                className="flex-shrink-0 flex items-center justify-center"
+                style={{ width: '220px', padding: '0 30px' }}
+              >
+                <img
+                  src={getVenueUrl(logo.src)}
+                  alt="Venue partner"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-auto object-contain transition-all duration-500"
+                  style={{
+                    filter: 'grayscale(100%)',
+                    opacity: 0.35,
+                    height: `${4.5 * scale}rem`,
+                    maxWidth: `${180 * scale}px`,
+                    transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '0.7';
+                    e.currentTarget.style.filter = 'grayscale(50%)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '0.35';
+                    e.currentTarget.style.filter = 'grayscale(100%)';
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
     </motion.section>
   );

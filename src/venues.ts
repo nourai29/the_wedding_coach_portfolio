@@ -3,32 +3,35 @@ export interface Venue {
   name: string;
   logo: string;
   images: string[];
+  location?: string;
+  websiteUrl?: string;
 }
 
 export const venues: Venue[] = [
   {
     id: 'anantara-santorini',
     name: 'Anantara Santorini',
+    location: 'Abu Dhabi, UAE',
     logo: 'src/assets/venues/Anantara Hotels & Resorts C.png', // Updated path
     images: [
-      'src/assets/portfolio/Anantara_Santorini_1.jpg',
-      'src/assets/portfolio/Anantara_Santorini_2.jpg',
-      'src/assets/portfolio/Anantara_Santorini_3.jpg',
-      'src/assets/portfolio/Anantara_Santorini_4.jpg',
-      'src/assets/portfolio/Anantara_Santorini_5.jpg',
-      'src/assets/portfolio/Anantara_Santorini_6.jpg',
-      'src/assets/portfolio/Anantara_Santorini_7.jpg',
-      'src/assets/portfolio/Anantara_Santorini_8.jpg',
-      'src/assets/portfolio/Anantara_Santorini_9.jpg',
-      'src/assets/portfolio/Anantara_Santorini_10.jpg',
-      'src/assets/portfolio/Anantara_Santorini_11.jpg',
-      'src/assets/portfolio/Anantara_Santorini_12.jpg',
-      'src/assets/portfolio/Anantara_Santorini_13.jpg',
-      'src/assets/portfolio/Anantara_Santorini_14.jpg',
-      'src/assets/portfolio/Anantara_Santorini_15.jpg',
-      'src/assets/portfolio/Anantara_Santorini_E&H_1.jpg',
-      'src/assets/portfolio/Anantara_Santorini_E&H_2.jpg',
-      'src/assets/portfolio/Anantara_Santorini_E&H_3.jpg',
+      'src/assets/portfolio-optimized/Anantara_Santorini_1.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_2.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_3.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_4.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_5.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_6.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_7.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_8.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_9.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_10.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_11.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_12.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_13.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_14.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_15.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_E&H_1.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_E&H_2.webp',
+      'src/assets/portfolio-optimized/Anantara_Santorini_E&H_3.webp',
     ],
   },
   {
@@ -64,27 +67,31 @@ export const venues: Venue[] = [
   {
     id: 'one-n-only-royal-mirage',
     name: 'One&Only Royal Mirage',
+    location: 'Dubai, UAE',
+    websiteUrl: 'https://www.oneandonlyresorts.com/royal-mirage',
     logo: 'src/assets/venues/one_n_only_royal_mirrage_logo.svg', // Updated path
     images: [
-      'src/assets/portfolio/T&T-One&Only_Mirrage_1.jpg',
-      'src/assets/portfolio/T&T-One&Only_Mirrage_2.jpg',
-      'src/assets/portfolio/T&T-One&Only_Mirrage_3.jpg',
-      'src/assets/portfolio/T&T-One&Only_Mirrage_4.jpg',
-      'src/assets/portfolio/T&T-One&Only_Mirrage_5.jpg',
+      'src/assets/portfolio-optimized/T&T-One&Only_Mirrage_1.webp',
+      'src/assets/portfolio-optimized/T&T-One&Only_Mirrage_2.webp',
+      'src/assets/portfolio-optimized/T&T-One&Only_Mirrage_3.webp',
+      'src/assets/portfolio-optimized/T&T-One&Only_Mirrage_4.webp',
+      'src/assets/portfolio-optimized/T&T-One&Only_Mirrage_5.webp',
     ],
   },
   {
     id: 'park-hyatt',
     name: 'Park Hyatt',
+    location: 'Dubai, UAE',
+    websiteUrl: 'https://www.hyatt.com/park-hyatt/dxbph-park-hyatt-dubai',
     logo: 'src/assets/venues/Hyatt-Logo.wine.svg',
     images: [
-        'src/assets/portfolio/Park_Hyatt_1.jpg',
-        'src/assets/portfolio/Park_Hyatt_2.jpg',
-        'src/assets/portfolio/Park_Hyatt_3.jpg',
-        'src/assets/portfolio/Park_Haytt_4.jpg',
-        'src/assets/portfolio/Park_Hyatt_5.jpg',
-        'src/assets/portfolio/Park_Hyatt_6.jpg',
-        'src/assets/portfolio/Park_Hyatt_7.jpg',
+        'src/assets/portfolio-optimized/Park_Hyatt_1.webp',
+        'src/assets/portfolio-optimized/Park_Hyatt_2.webp',
+        'src/assets/portfolio-optimized/Park_Hyatt_3.webp',
+        'src/assets/portfolio-optimized/Park_Haytt_4.webp',
+        'src/assets/portfolio-optimized/Park_Hyatt_5.webp',
+        'src/assets/portfolio-optimized/Park_Hyatt_6.webp',
+        'src/assets/portfolio-optimized/Park_Hyatt_7.webp',
     ],
     },
     {

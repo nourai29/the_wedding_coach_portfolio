@@ -1,20 +1,8 @@
 import { motion } from 'motion/react';
-import { useInView } from 'motion/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Instagram, Mail, Phone } from 'lucide-react';
-
-const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1.2,
-      ease: [0.25, 1, 0.5, 1]
-    }
-  }
-};
+import { fadeInUp, staggerContainer, useScrollAnimation } from '../lib/animations';
 
 const packageMap: Record<string, string> = {
   'on-the-day-coordination': 'On-the-Day Coordination',
@@ -23,8 +11,7 @@ const packageMap: Record<string, string> = {
 };
 
 export function ConnectPage() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const { ref, isInView } = useScrollAnimation(0.1);
   const [searchParams] = useSearchParams();
   const packageParam = searchParams.get('package') || '';
   const preselected = packageMap[packageParam] || '';
@@ -62,57 +49,64 @@ export function ConnectPage() {
   };
 
   return (
-    <div className="pt-20" style={{ backgroundColor: '#FFFBF1' }}>
-      {/* Banner Header */}
+    <div className="pt-20" style={{ backgroundColor: '#FFFBF1', minHeight: '100vh' }}>
+      {/* Hero Banner */}
       <motion.div
         ref={ref}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        variants={fadeInUp}
-        className="text-center py-20 px-6"
+        variants={staggerContainer(0.15, 0.2)}
+        className="text-center pt-16 pb-20 px-6"
+        style={{
+          backgroundColor: '#73555d',
+        }}
       >
-        <p
+        <motion.p
+          variants={fadeInUp}
           style={{
             fontFamily: "'Tenor Sans', sans-serif",
-            fontSize: '14px',
-            letterSpacing: '0.2em',
-            color: '#73555d',
+            fontSize: '15px',
+            letterSpacing: '0.25em',
+            color: '#FFFBF1',
             textTransform: 'uppercase',
-            opacity: 0.8,
-            marginBottom: '12px'
+            fontWeight: 400,
+            opacity: 0.6,
+            marginBottom: '16px'
           }}
         >
           Get in Touch
-        </p>
-        <h1
+        </motion.p>
+        <motion.h1
+          variants={fadeInUp}
           style={{
             fontFamily: "'Playfair Display', serif",
             fontSize: 'clamp(2.5rem, 5vw, 4rem)',
             lineHeight: '1.2',
-            color: '#73555d',
+            color: '#FFFBF1',
             fontWeight: 500,
             marginBottom: '16px'
           }}
         >
-          Let's Connect
-        </h1>
-        <p
+          Let's Create Something Beautiful
+        </motion.h1>
+        <motion.p
+          variants={fadeInUp}
           style={{
             fontFamily: "'Tenor Sans', sans-serif",
             fontSize: '15px',
             lineHeight: '1.8',
-            color: '#73555d',
-            opacity: 0.8,
+            color: '#FFFBF1',
+            opacity: 0.6,
             maxWidth: '500px',
             margin: '0 auto'
           }}
         >
           We'd love to hear about your wedding plans. Reach out and let's start a conversation.
-        </p>
+        </motion.p>
       </motion.div>
 
-      {/* Two-column layout */}
-      <div className="max-w-6xl mx-auto px-6 pb-24 grid grid-cols-1 lg:grid-cols-5 gap-16 lg:gap-20">
+      {/* Form + Contact Section */}
+      <div className="max-w-6xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-20">
 
         {/* Left — Form */}
         <div className="lg:col-span-3">
@@ -220,7 +214,7 @@ export function ConnectPage() {
 
               <button
                 type="submit"
-                className="w-full px-8 py-4 uppercase tracking-[0.15em] text-[11px] transition-all duration-500"
+                className="w-full active:scale-95 px-8 py-4 uppercase tracking-[0.15em] text-[11px] hover:tracking-[0.25em] transition-all duration-500"
                 style={{
                   fontFamily: "'Tenor Sans', sans-serif",
                   backgroundColor: '#73555d',
@@ -248,7 +242,6 @@ export function ConnectPage() {
           <div
             className="p-10 sticky top-28"
             style={{
-              backgroundColor: '#FFFBF1',
               border: '1px solid rgba(115, 85, 93, 0.15)',
             }}
           >
@@ -265,39 +258,48 @@ export function ConnectPage() {
             <div className="w-10 h-px bg-[#73555d] opacity-30 mb-8" />
 
             <div className="space-y-8">
-              <div>
-                <p style={{ ...labelStyle, marginBottom: '6px' }}>Email</p>
-                <a
-                  href="mailto:info@twc-uae.com"
-                  className="hover:opacity-70 transition-opacity"
-                  style={{ fontFamily: "'Tenor Sans', sans-serif", color: '#73555d', fontSize: '15px' }}
-                >
-                  info@twc-uae.com
-                </a>
+              <div className="flex items-start gap-4">
+                <Mail size={18} strokeWidth={1} className="text-[#73555d] opacity-50 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p style={{ ...labelStyle, marginBottom: '6px' }}>Email</p>
+                  <a
+                    href="mailto:info@twc-uae.com"
+                    className="hover:opacity-70 transition-opacity"
+                    style={{ fontFamily: "'Tenor Sans', sans-serif", color: '#73555d', fontSize: '15px' }}
+                  >
+                    info@twc-uae.com
+                  </a>
+                </div>
               </div>
 
-              <div>
-                <p style={{ ...labelStyle, marginBottom: '6px' }}>Phone</p>
-                <a
-                  href="tel:+971529463394"
-                  className="hover:opacity-70 transition-opacity"
-                  style={{ fontFamily: "'Tenor Sans', sans-serif", color: '#73555d', fontSize: '15px' }}
-                >
-                  0529463394
-                </a>
+              <div className="flex items-start gap-4">
+                <Phone size={18} strokeWidth={1} className="text-[#73555d] opacity-50 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p style={{ ...labelStyle, marginBottom: '6px' }}>Phone</p>
+                  <a
+                    href="tel:+971529463394"
+                    className="hover:opacity-70 transition-opacity"
+                    style={{ fontFamily: "'Tenor Sans', sans-serif", color: '#73555d', fontSize: '15px' }}
+                  >
+                    +971 52 946 3394
+                  </a>
+                </div>
               </div>
 
-              <div>
-                <p style={{ ...labelStyle, marginBottom: '6px' }}>Instagram</p>
-                <a
-                  href="https://www.instagram.com/theweddingcoach.uae/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:opacity-70 transition-opacity inline-block"
-                  style={{ color: '#73555d' }}
-                >
-                  <Instagram size={32} />
-                </a>
+              <div className="flex items-start gap-4">
+                <Instagram size={18} strokeWidth={1} className="text-[#73555d] opacity-50 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p style={{ ...labelStyle, marginBottom: '6px' }}>Instagram</p>
+                  <a
+                    href="https://www.instagram.com/theweddingcoach.uae/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:opacity-70 transition-opacity"
+                    style={{ fontFamily: "'Tenor Sans', sans-serif", color: '#73555d', fontSize: '15px' }}
+                  >
+                    @theweddingcoach.uae
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -7,6 +7,7 @@ export interface Package {
   name: string;
   role: string;
   description: string;
+  iconName: 'Calendar' | 'Compass' | 'Gem';
   features: PackageFeature[];
   isMostPopular?: boolean;
 }
@@ -15,7 +16,8 @@ export const packages: Package[] = [
   {
     name: 'ON-THE-DAY COORDINATION',
     role: 'Professional Execution',
-    description: "For the couple who has woven their own narrative, we provide the seamless execution to honor your creation. We'll be there to manage every detail on the day, so you can be fully present.",
+    iconName: 'Calendar',
+    description: "Imagine waking up on your wedding day knowing every detail has been lovingly arranged. You've crafted the vision — we ensure it unfolds flawlessly, so you can be fully present for every precious moment.",
     features: [
       { text: 'Pre-Wedding Support (2-4 weeks prior)', isIncluded: true },
       { text: 'Venue walkthrough', isIncluded: true },
@@ -33,7 +35,8 @@ export const packages: Package[] = [
   {
     name: 'WEDDING DAY COACH',
     role: 'Expert Guidance',
-    description: "A guiding hand for the discerning couple, we offer our expertise to perfect your vision and grant you peace of mind. We'll be your partners in planning, supporting you at every stage.",
+    iconName: 'Compass',
+    description: "Picture having a trusted confidante by your side throughout the entire journey — someone who understands your vision, anticipates your needs, and brings calm to every decision. That's the peace of mind we offer.",
     features: [
       { text: 'Everything in On-the-Day Coordination', isIncluded: true },
       { text: 'Unlimited planning support', isIncluded: true },
@@ -47,7 +50,8 @@ export const packages: Package[] = [
   {
     name: 'WEDDING PLANNER',
     role: 'Complete Creative Direction',
-    description: "A bespoke journey from the first whisper of an idea to the final dance, where every detail is a testament to your love story. We'll be with you every step of the way, from concept to completion.",
+    iconName: 'Gem',
+    description: "Close your eyes and see it — the flowers, the light, the laughter. Now imagine handing that dream to someone who will pour their heart into making it real, from the first spark of inspiration to the last dance.",
     features: [
       { text: 'Everything in Wedding Day Coach', isIncluded: true },
       { text: 'Bespoke wedding concept creation and mood board', isIncluded: true },

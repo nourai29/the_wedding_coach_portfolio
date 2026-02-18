@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { PlusCircle } from 'lucide-react';
 import { venues } from '../../venues';
 
@@ -60,7 +60,7 @@ export function VenuesPage() {
         >
           We've had the privilege of planning weddings at some of the UAE's most iconic venues.
         </p>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
           {venues.map((venue) => {
             const isClickable = clickableVenueIds.includes(venue.id);
             const Wrapper = isClickable ? motion(Link) : motion.div;
@@ -108,7 +108,9 @@ export function VenuesPage() {
 
                 <img 
                   src={getVenueUrl(venue.logo)}
-                  alt={venue.name} 
+                  alt={venue.name}
+                  loading="lazy"
+                  decoding="async"
                   className="relative z-10 w-full h-auto object-contain transition-transform duration-300 ease-in-out p-8" // Added p-8 here
                   group-hover="scale-105"
                 />
