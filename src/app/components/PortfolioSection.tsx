@@ -47,7 +47,7 @@ export function PortfolioSection() {
     <motion.section
       ref={ref}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      animate="visible"
       variants={staggerContainer(0.06, 0.15)}
       className="relative py-20 px-4 md:px-[6vw]"
       style={{
@@ -93,24 +93,31 @@ export function PortfolioSection() {
             key={index}
             variants={scaleIn}
             className={`relative overflow-hidden group cursor-pointer ${image.span}`}
+            onMouseEnter={(e) => {
+              const img = e.currentTarget.querySelector('img');
+              if (img) {
+                img.style.filter = 'saturate(0.85) brightness(1.12) contrast(0.9) sepia(0.08)';
+                img.style.transform = 'scale(1.3)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              const img = e.currentTarget.querySelector('img');
+              if (img) {
+                img.style.filter = 'saturate(0) brightness(1.1)';
+                img.style.transform = 'scale(1)';
+              }
+            }}
           >
             <img
               src={getImageUrl(image.src)}
               alt={image.alt}
-              loading="lazy"
+              loading="eager"
               decoding="async"
               className="w-full h-full object-cover transition-all duration-700"
               style={{
+                imageOrientation: 'from-image',
                 filter: 'saturate(0) brightness(1.1)',
                 transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.filter = 'saturate(1) brightness(1)';
-                e.currentTarget.style.transform = 'scale(1.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.filter = 'saturate(0) brightness(1.1)';
-                e.currentTarget.style.transform = 'scale(1)';
               }}
             />
             {/* Hover overlay with couple name */}
