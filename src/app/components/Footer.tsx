@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Instagram } from 'lucide-react';
 import { COLORS } from '../lib/tokens';
 
@@ -11,6 +11,8 @@ const navLinks = [
 ];
 
 export function Footer() {
+  const location = useLocation();
+
   return (
     <footer style={{ backgroundColor: '#73555d', color: '#FFFBF1' }}>
       {/* Main footer */}
@@ -67,6 +69,12 @@ export function Footer() {
                     style={{
                       letterSpacing: '0.05em',
                       transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                    }}
+                    onClick={(e) => {
+                      if (link.to === '/' && location.pathname === '/') {
+                        e.preventDefault();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.letterSpacing = '0.12em';

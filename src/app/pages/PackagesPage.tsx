@@ -83,7 +83,7 @@ export function PackagesPage() {
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
               variants={fadeInUp}
-              className="relative flex flex-col items-center transition-all duration-500"
+              className="relative flex flex-col items-center h-full transition-all duration-500"
               style={{
                 padding: '40px 32px',
                 border: pkg.isMostPopular
@@ -208,29 +208,29 @@ export function PackagesPage() {
                 </AnimatePresence>
               </motion.ul>
 
-              <button
-                onClick={() => navigate(`/contact?package=${packageSlug(pkg.name)}`)}
-                className="mt-10 w-full px-8 py-4 uppercase tracking-[0.15em] text-[11px] active:scale-95 transition-all duration-500"
-                style={{
-                  fontFamily: "'Tenor Sans', sans-serif",
-                  backgroundColor: 'transparent',
-                  color: '#73555d',
-                  border: '1px solid #73555d',
-                  transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#73555d';
-                  e.currentTarget.style.color = '#FFFBF1';
-                  e.currentTarget.style.letterSpacing = '0.25em';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'transparent';
-                  e.currentTarget.style.color = '#73555d';
-                  e.currentTarget.style.letterSpacing = '0.15em';
-                }}
-              >
-                Let's Connect!
-              </button>
+              <div className="mt-auto pt-6">
+                <button
+                  onClick={() => navigate(`/contact?package=${packageSlug(pkg.name)}`)}
+                  className="px-10 py-3.5 uppercase tracking-[0.15em] text-[11px] active:scale-[0.97] transition-all duration-500"
+                  style={{
+                    fontFamily: "'Tenor Sans', sans-serif",
+                    backgroundColor: 'transparent',
+                    color: '#73555d',
+                    border: '1px solid #73555d',
+                    transitionTimingFunction: 'cubic-bezier(0.25, 1, 0.5, 1)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#73555d';
+                    e.currentTarget.style.color = '#FFFBF1';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color = '#73555d';
+                  }}
+                >
+                  Let's Connect!
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>

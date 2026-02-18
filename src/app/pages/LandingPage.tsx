@@ -5,6 +5,7 @@ import { TestimonialsSection } from '../components/TestimonialsSection';
 import { PortfolioSection } from '../components/PortfolioSection';
 import { ServicesSection } from '../components/ServicesSection';
 import { Divider } from '../components/Divider';
+import { ConnectSection } from '../components/ConnectSection';
 import { useNavigate } from 'react-router-dom';
 
 const venueLogos = [
@@ -58,6 +59,8 @@ export function LandingPage() {
       <div id="portfolio">
         <PortfolioSection />
       </div>
+
+      <ConnectSection />
     </main>
   );
 }

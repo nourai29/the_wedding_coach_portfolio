@@ -37,7 +37,7 @@ export function TestimonialsSection() {
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
       variants={staggerContainer()}
-      className="relative py-28 px-6 md:px-[12vw]"
+      className="relative py-20 px-6 md:px-[12vw]"
       style={{ backgroundColor: COLORS.brand }}
     >
       <motion.div
@@ -80,6 +80,8 @@ export function TestimonialsSection() {
             className="relative px-8 py-12 md:px-16 md:py-16"
             style={{
               border: '1px solid rgba(255, 251, 241, 0.1)',
+              backgroundColor: 'rgba(255, 251, 241, 0.06)',
+              borderRadius: '2px',
             }}
           >
             {/* Decorative quote mark */}

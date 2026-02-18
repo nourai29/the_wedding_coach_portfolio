@@ -55,7 +55,7 @@ const tileVariant = {
 };
 
 export function ServicesSection() {
-  const { ref, isInView } = useScrollAnimation(0.08);
+  const { ref, isInView } = useScrollAnimation(0.08, true);
 
   return (
     <section
@@ -68,7 +68,7 @@ export function ServicesSection() {
         initial="hidden"
         animate={isInView ? 'visible' : 'hidden'}
         variants={staggerContainer(0.12, 0.1)}
-        className="relative text-center py-28 md:py-36 px-6"
+        className="relative text-center pt-0 pb-20 md:pb-28 px-6"
       >
         {/* Subtle background texture */}
         <div
@@ -80,12 +80,6 @@ export function ServicesSection() {
         />
 
         <motion.div variants={fadeInUp} className="relative">
-          {/* Thin accent line */}
-          <div
-            className="w-12 h-px mx-auto mb-10"
-            style={{ backgroundColor: COLORS.roseGold, opacity: 0.4 }}
-          />
-
           <p
             style={{
               fontFamily: FONTS.body,
@@ -158,7 +152,7 @@ export function ServicesSection() {
       </motion.div>
 
       {/* Three Premium Package Tiles */}
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pb-28 md:pb-36">
+      <div className="max-w-[1400px] mx-auto px-4 md:px-8 pb-20 md:pb-28">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           {packageTiles.map((tile, index) => (
             <motion.div

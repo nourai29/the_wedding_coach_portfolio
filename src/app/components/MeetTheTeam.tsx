@@ -35,7 +35,7 @@ export function MeetTheTeam() {
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
       variants={staggerContainer(0.2, 0.2)}
-      className="relative py-28 px-6 md:px-[10vw]"
+      className="relative pt-20 pb-10 px-6 md:px-[10vw]"
       style={{
         backgroundColor: '#FFFBF1',
       }}

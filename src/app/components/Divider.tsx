@@ -3,7 +3,7 @@ import { COLORS } from '../lib/tokens';
 export function Divider() {
   return (
     <div
-      className="flex items-center justify-center py-20 px-6 md:px-[15vw]"
+      className="flex items-center justify-center py-6 px-6 md:px-[15vw]"
       style={{ backgroundColor: '#FFFBF1' }}
     >
       <div

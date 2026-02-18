@@ -64,11 +64,12 @@ export function staggerContainer(stagger = 0.2, delay = 0.2) {
 }
 
 /**
- * Scroll-triggered animation hook that replays entrance animations
- * each time the element scrolls into view (not just once).
+ * Scroll-triggered animation hook.
+ * By default replays each time the element scrolls into view.
+ * Pass once = true to animate in once and stay visible.
  */
-export function useScrollAnimation(amount = 0.2) {
+export function useScrollAnimation(amount = 0.2, once = false) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount });
+  const isInView = useInView(ref, { once, amount });
   return { ref, isInView };
 }
