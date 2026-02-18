@@ -9,6 +9,7 @@ const navLinks = [
   { title: 'About Us', path: '/' },
   { title: 'Portfolio', path: '/portfolio' },
   { title: 'Packages', path: '/packages' },
+  { title: 'Venues', path: '/venues' },
 ];
 
 const drawerLinks = [
