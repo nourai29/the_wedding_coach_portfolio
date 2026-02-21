@@ -7,7 +7,7 @@ const team = [
   {
     name: 'Sally',
     initial: 'S',
-    role: 'Client Relations & Operations',
+    role: 'Client Relations & Creative Direction',
     photo: undefined as string | undefined,
     description:
       'Sally leads the business as the primary client-facing and operational director, guiding couples through every stage of their journey with clarity, reassurance, and care. With a background in high-profile events, she oversees all weddings from concept to completion, ensuring each detail is thoughtfully managed and every wedding day feels calm, seamless, and truly enjoyed.',
@@ -16,7 +16,7 @@ const team = [
   {
     name: 'Charlotte',
     initial: 'C',
-    role: 'Planning & Creative Direction',
+    role: 'Planning & Project Management',
     photo: undefined as string | undefined,
     description:
       'Working primarily behind the scenes, Charlotte leads the planning, creative development, and project management, bringing structure, balance, and precision to each wedding. Her composed approach and meticulous attention to detail ensure every wedding is carefully considered, lovingly planned, and flawlessly prepared.',

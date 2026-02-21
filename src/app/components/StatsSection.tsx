@@ -59,17 +59,6 @@ export function StatsSection({ venueLogos }: StatsSectionProps) {
           >
             Our Story
           </p>
-          <h2
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-              lineHeight: '1.2',
-              color: '#73555d',
-              fontWeight: 500,
-            }}
-          >
-            Every Couple Is Different
-          </h2>
         </motion.div>
 
         <motion.div variants={staggerContainer()} className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto">

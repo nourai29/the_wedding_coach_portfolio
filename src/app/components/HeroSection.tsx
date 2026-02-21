@@ -130,7 +130,7 @@ export function HeroSection({ onCTAClick }: HeroSectionProps) {
           >
             We're Sally and Charlotte, and we're so glad you're here.
             We created The Wedding Coach to bring trust, clarity, and calm
-            to your wedding day, so you can truly enjoy every moment.
+            to your wedding day, so you can truly enjoy your day.
           </motion.p>
 
           <motion.button

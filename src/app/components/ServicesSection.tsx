@@ -34,7 +34,7 @@ const packageTiles = [
     image: portfolioImages[7],  // Anantara — golden-hour elegance
   },
   {
-    label: 'FULL WEDDING PLANNER',
+    label: 'WEDDING PLANNER',
     title: 'Complete Curation',
     subtitle: 'From first inspiration to final dance — every detail thoughtfully orchestrated.',
     image: portfolioImages[27], // Ollie & Marina — candid emotion
@@ -104,7 +104,7 @@ export function ServicesSection() {
               marginBottom: '20px',
             }}
           >
-            Crafted for Your Celebration
+            Crafted for Your Special Day
           </h2>
 
           <p
@@ -209,7 +209,7 @@ export function ServicesSection() {
                 />
 
                 {/* Text content */}
-                <div className="absolute bottom-0 left-0 right-0 p-7 md:p-8 z-10">
+                <div className="absolute bottom-0 left-0 right-0 p-7 md:p-8 z-10 flex flex-col justify-end items-start">
                   <p
                     className="mb-2"
                     style={{
@@ -219,9 +219,10 @@ export function ServicesSection() {
                       color: 'rgba(255, 251, 241, 0.6)',
                       textTransform: 'uppercase',
                       fontWeight: 400,
+                      textAlign: 'left',
                     }}
                   >
-                    {tile.label}
+                    {tile.title}
                   </p>
 
                   <h3
@@ -232,9 +233,13 @@ export function ServicesSection() {
                       lineHeight: '1.2',
                       color: COLORS.cream,
                       fontWeight: 400,
+                      textAlign: 'left',
+                      minHeight: '2.4em',
+                      display: 'flex',
+                      alignItems: 'flex-end',
                     }}
                   >
-                    {tile.title}
+                    {tile.label}
                   </h3>
 
                   <p
@@ -246,6 +251,7 @@ export function ServicesSection() {
                       color: 'rgba(255, 251, 241, 0.8)',
                       fontWeight: 300,
                       maxWidth: '280px',
+                      minHeight: '48px',
                     }}
                   >
                     {tile.subtitle}

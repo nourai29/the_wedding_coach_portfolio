@@ -91,7 +91,7 @@ export function ConnectSection() {
           position: 'relative',
         }}
       >
-        So you can truly enjoy every moment.
+        So you can truly enjoy your day.
       </motion.p>
       <motion.button
         variants={fadeInUp}
