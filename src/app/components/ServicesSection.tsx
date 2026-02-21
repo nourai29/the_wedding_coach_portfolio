@@ -28,13 +28,13 @@ const packageTiles = [
     image: portfolioImages[20], // Aisha & Kamil — emotional couple shot
   },
   {
-    label: 'WEDDING DAY COACH',
+    label: 'WEDDING\nDAY COACH',
     title: 'Guided Confidence',
     subtitle: 'Expert insight to refine your vision and elevate every detail.',
     image: portfolioImages[7],  // Anantara — golden-hour elegance
   },
   {
-    label: 'WEDDING PLANNER',
+    label: 'WEDDING\nPLANNER',
     title: 'Complete Curation',
     subtitle: 'From first inspiration to final dance — every detail thoughtfully orchestrated.',
     image: portfolioImages[27], // Ollie & Marina — candid emotion
@@ -234,6 +234,7 @@ export function ServicesSection() {
                       color: COLORS.cream,
                       fontWeight: 400,
                       textAlign: 'left',
+                      whiteSpace: 'pre-line',
                       minHeight: '2.4em',
                       display: 'flex',
                       alignItems: 'flex-end',
