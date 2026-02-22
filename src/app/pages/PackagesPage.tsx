@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { packages } from '../../packages';
 import { Check, Calendar, Compass, Gem } from 'lucide-react';
-import brochurePdf from '../../assets/TWC_Wedding_Packages.pdf';
+const brochurePdf = 'https://raw.githubusercontent.com/weddingdai-internal/twc_website/main/src/assets/TWC%20Wedding%20Packages.pdf';
 import { fadeInUp, staggerContainer, useScrollAnimation } from '../lib/animations';
 import { COLORS } from '../lib/tokens';
 
